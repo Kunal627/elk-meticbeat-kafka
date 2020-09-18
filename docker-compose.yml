@@ -1,0 +1,30 @@
+version: '3'
+services:
+  kafka:
+    container_name: "kafkacluster"
+#    image: "lensesio/fast-data-dev:latest"
+    build: .
+    networks: 
+      - kafkanet
+    ports:
+      - "3030:3030"
+      - "8081-8083:8081-8083"
+      - "9581-9585:9581-9585"
+      - "9092:9092"
+      - "80:80"
+#    tty: true
+#    command: bash -c "curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-oss-7.8.0-linux-x86_64.tar.gz"
+      
+  elk:
+    container_name: "elkm"
+    image: "sebp/elk"
+    networks: 
+      - kafkanet
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
+      
+networks:
+  kafkanet:
+    driver: bridge
